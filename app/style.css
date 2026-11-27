@@ -1,0 +1,357 @@
+/* Deal Desk — a Black Friday deal finder in the broadcast news package
+   grammar: one ink + lemon + gold + paper system, a parallelogram brand
+   plate, mono datelines, ink cards with a lemon top edge, and a rotated
+   verdict stamp on every deal. System fonts only; nothing loads over the
+   network. */
+
+:root {
+  --ink: #121417;
+  --ink-2: #1b1e23;
+  --ink-3: #22262c;
+  --lemon: #f2cf1d;
+  --lemon-light: #f8de4a;
+  --gold: #d4b064;
+  --paper: #f4f1e8;
+  --paper-2: #ece7d8;
+  --olive: #6e5a1e;
+  --muted: #5c6067;
+  --line: #d8d2c2;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Brand plate: the parallelogram that is the bulletin's bug. */
+.masthead {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 5px solid var(--lemon);
+}
+.masthead-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.plate {
+  background: linear-gradient(115deg, var(--lemon), var(--lemon-light));
+  color: var(--ink);
+  font-family: "Arial Narrow", "Helvetica Neue Condensed", sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 10px 22px 10px 18px;
+  transform: skewX(-12deg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.plate span { display: inline-block; transform: skewX(12deg); }
+.masthead-tag {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.masthead-tag strong { color: var(--paper); }
+.masthead-date {
+  margin-left: auto;
+  text-align: right;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--paper);
+}
+.masthead-date span { display: block; color: var(--gold); }
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 56px;
+}
+
+a { color: #0b5d3b; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* Rundown: the bulletin opens with what today holds. */
+.rundown { padding: 28px 0 8px; }
+.kicker {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--olive);
+  margin: 0 0 8px;
+}
+.rundown h1 {
+  font-family: "Arial Narrow", "Helvetica Neue Condensed", sans-serif;
+  font-size: 44px;
+  line-height: 1.05;
+  margin: 0 0 10px;
+  letter-spacing: 0.01em;
+}
+.lede { max-width: 760px; margin: 0 0 6px; color: var(--ink-2); }
+.lede strong { color: var(--ink); }
+
+/* Controls: the strap. One bar, every filter in it. */
+.controls {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 16px 10px;
+  margin: 18px 0 20px;
+  border-top: 4px solid var(--lemon);
+}
+.control-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+.controls label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.search-label { flex: 1 1 260px; }
+.controls input,
+.controls select {
+  font: 15px/1.3 system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink-3);
+  padding: 8px 10px;
+  min-width: 0;
+}
+.controls input:focus,
+.controls select:focus { outline: 3px solid var(--lemon); outline-offset: 1px; }
+#clear {
+  font: 600 14px/1 system-ui, sans-serif;
+  background: transparent;
+  color: var(--lemon);
+  border: 2px solid var(--lemon);
+  padding: 9px 14px;
+  cursor: pointer;
+}
+#clear:hover { background: var(--lemon); color: var(--ink); }
+.count-line {
+  margin: 10px 0 2px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+}
+.count-line strong { color: var(--lemon); }
+
+/* Deal grid: spec cards, one fact per card. */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.grid > li { display: flex; }
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--lemon);
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.card-eyebrow,
+.detail-eyebrow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--olive);
+}
+.card h2 {
+  font-size: 19px;
+  line-height: 1.25;
+  margin: 8px 0 10px;
+}
+.card h2 a { color: var(--ink); text-decoration: none; }
+.card h2 a:hover { text-decoration: underline; text-decoration-color: var(--lemon); text-decoration-thickness: 3px; }
+
+/* Split-flap price board: old and new on one board. */
+.price-board {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 12px;
+  margin: 0 0 10px;
+}
+.price-board .sale {
+  font-family: "Arial Narrow", "Helvetica Neue Condensed", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--lemon);
+  line-height: 1;
+}
+.price-board .was { color: #b9b3a4; font-size: 15px; }
+.price-board .pct {
+  margin-left: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--lemon);
+  color: var(--ink);
+  padding: 3px 7px;
+}
+.save-bar {
+  height: 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+.save-bar span { display: block; height: 100%; background: var(--lemon); }
+.save-line {
+  margin: 6px 0 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--olive);
+}
+.evidence { margin: 0 0 12px; font-size: 14.5px; color: var(--ink-2); }
+.card-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.shop {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--lemon);
+  padding: 8px 12px;
+  text-decoration: none;
+  font-size: 14px;
+}
+.shop:hover { background: var(--lemon-light); }
+.source-line {
+  margin: 12px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Verdict stamps: one per story, at most. */
+.stamp {
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 9px;
+  transform: rotate(-6deg);
+  border: 2px solid currentColor;
+}
+.stamp-new { color: #0b5d3b; background: var(--lemon); border-color: #0b5d3b; }
+.stamp-strong { color: var(--ink); background: var(--paper-2); border-color: var(--gold); }
+.stamp-routine { color: var(--muted); background: transparent; border-color: var(--muted); }
+
+.empty {
+  grid-column: 1 / -1;
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 24px;
+  font-size: 17px;
+}
+
+/* Deal detail page. */
+.back { margin: 20px 0 0; }
+.detail { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--lemon); padding: 22px 24px; margin: 12px 0 0; }
+.detail h1 {
+  font-family: "Arial Narrow", "Helvetica Neue Condensed", sans-serif;
+  font-size: 38px;
+  line-height: 1.1;
+  margin: 10px 0 16px;
+}
+.detail h2 { font-size: 18px; margin: 22px 0 6px; }
+.detail-board { background: var(--ink); color: var(--paper); padding: 16px 18px; }
+.detail-price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.detail-price .sale.big { font-family: "Arial Narrow", "Helvetica Neue Condensed", sans-serif; font-size: 46px; font-weight: 800; color: var(--lemon); line-height: 1; }
+.detail-price .was.big-was { color: #b9b3a4; font-size: 18px; }
+.detail-price .pct.big-pct { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 15px; font-weight: 700; background: var(--lemon); color: var(--ink); padding: 4px 9px; }
+.detail-board .save-line.big-save { color: var(--paper); margin: 10px 0 8px; }
+.detail-board .save-bar { background: var(--ink-3); border-color: var(--ink-3); }
+.stamp-line { margin: 16px 0 0; }
+.big-evidence { font-size: 17px; max-width: 720px; }
+.compare { background: var(--paper); border-left: 4px solid var(--gold); padding: 10px 14px; max-width: 720px; }
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 20px;
+  max-width: 720px;
+  margin: 18px 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.facts dt { font-weight: 700; }
+.facts dd { margin: 0; }
+.big-shop { display: inline-block; font-size: 16px; padding: 12px 18px; }
+.fineprint { color: var(--muted); font-size: 13.5px; max-width: 720px; }
+
+/* Footer: the sign-off. */
+footer {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 5px solid var(--lemon);
+}
+footer .foot-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+footer p { margin: 0 0 8px; }
+footer .mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+  .rundown h1 { font-size: 32px; }
+  .detail h1 { font-size: 28px; }
+  .masthead-date { margin-left: 0; text-align: left; }
+  .plate { font-size: 24px; }
+  .control-row { flex-direction: column; align-items: stretch; }
+  .search-label { flex-basis: auto; }
+}
