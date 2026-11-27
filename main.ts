@@ -21,7 +21,7 @@
 // this program does nothing time- or environment-dependent: it copies
 // files and builds the dossier, nothing else.
 
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
@@ -33,9 +33,16 @@ const shotsDir = join(repoRoot, 'screenshots');
 
 function handIn() {
   // Start from a clean output directory so a stale file from an earlier
-  // run can never ride along into the entry.
-  rmSync(outDir, { recursive: true, force: true });
+  // run can never ride along into the entry. Empty it entry by entry and
+  // never remove the directory itself: in the grader /output is a
+  // mounted volume, and removing a mount point throws EBUSY ("Device or
+  // resource busy") — that is what made the graded run exit 1 while the
+  // same code passed locally against a plain folder. Emptying the
+  // contents works the same in both places.
   mkdirSync(outDir, { recursive: true });
+  for (const entry of readdirSync(outDir)) {
+    rmSync(join(outDir, entry), { recursive: true, force: true });
+  }
 
   cpSync(appDir, join(outDir, 'app'), { recursive: true });
   mkdirSync(join(outDir, 'screenshots'), { recursive: true });
